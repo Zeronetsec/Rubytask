@@ -2,7 +2,7 @@
 
 [![version](https://img.shields.io/badge/Rubytask-Version%201.0-blue.svg?maxAge=259200)]()
 [![os](https://img.shields.io/badge/Supported%20OS-Linux-blue.svg)]()
-[![license](https://img.shields.io/badge/License-MIT-blue.svg)]()
+[![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 # Rubytask
 Rubytask is a lightweight CLI tool for managing tasks and notes with zero dependencies. <br>
@@ -52,7 +52,7 @@ Rubytask is a lightweight CLI tool for managing tasks and notes with zero depend
 	</tr>
 	<tr>
 		<td>Termux</td>
-		<td>v0.118.3</td>
+		<td>0.118.3</td>
 	</tr>
 </table>
 
@@ -63,9 +63,6 @@ cd Rubytask
 chmod +x install.sh
 ./install.sh
 ```
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first. <br>
 
 ## License
 This project is licensed under the MIT License. <br>

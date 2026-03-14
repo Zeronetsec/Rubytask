@@ -5,6 +5,7 @@ N='\033[0m'
 R='\033[1;31m'
 B='\033[1;34m'
 GG='\033[0;32m'
+DG='\033[1;90m'
 
 base="$PREFIX/opt"
 symlink="$PREFIX/bin"
@@ -39,7 +40,7 @@ function spinner() {
         printf "     \b\b\b\b\b"
     }
 
-    echo -ne "\033[1;34m[*] \033[0m${msg}"
+    echo -ne "${B}[*] ${N}${msg}${N}"
     command bash -c "${cmd}" > /dev/null 2>&1 &
     local pid=$!
 
@@ -48,9 +49,9 @@ function spinner() {
     local status=$?
 
     if [[ "$status" -eq 0 ]]; then
-        echo -ne " \033[0;32m✔ \033[0mSuccess\n"
+        echo -ne " ${DG}- ${N}[${GG}✔ ${N}Success]\n"
     else
-        echo -ne " \033[1;31m✖ \033[0mFailed (exit code: \033[0;32m${status}\033[0m)\n"
+        echo -ne " ${DG}- ${N}[${R}✖ ${N}Failed (exit code: ${GG}${status}${N})]\n"
     fi
 }
 
@@ -81,19 +82,18 @@ if [[ ! -d "$path" ]]; then
 fi
 
 echo -ne "\033[?25l"
-echo -e "\n${B}[*] ${N}Installing: ${GG}rubytask${N}"
-printf '\n'
+echo -e "\n${B}[*] ${N}Installing: ${GG}Rubytask${N}"
 
 spinner \
     --command="command apt install ruby -y" \
-    --message="Installing ruby" || {
+    --message="${N}Installing: ${GG}ruby${N}" || {
         rescursor 1
     }
 
 if [[ ! -d "$base" ]]; then
     spinner \
         --command="command mkdir -p "$base"" \
-        --message="Create directory ${base}" || {
+        --message="${N}Create directory: ${GG}${base}${N}" || {
             rescursor 1
         }
 fi
@@ -101,26 +101,26 @@ fi
 if [[ -d "$base/rubytask" ]]; then
     spinner \
         --command="command rm -rf "$base/rubytask"" \
-        --message="Removing old rubytask" || {
+        --message="${N}Removing: ${GG}old rubytask${N}" || {
             rescursor 1
         }
 fi
 
 spinner \
     --command="command mv "$path" "$base/rubytask"" \
-    --message="Moving ${path} => ${base}/rubytask" || {
+    --message="${N}Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}" || {
         rescursor 1
     }
 
 spinner \
     --command="command chmod +x "$base/rubytask/rubytask.rb"" \
-    --message="Set permission" || {
+    --message="${N}Setting up permission" || {
         rescursor 1
     }
 
 spinner \
     --command="command ln -sf "$base/rubytask/rubytask.rb" "$symlink/rubytask"" \
-    --message="Symlink ${base}/rubytask/rubytask.rb => ${symlink}/rubytask" || {
+    --message="${N}Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}" || {
         rescursor 1
     }
 
