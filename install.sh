@@ -99,7 +99,7 @@ done
 
 if [[ ! -d "$base" ]]; then
     spinner \
-        --command="command mkdir -p "$base"" \
+        --command="command mkdir -p \"${base}\"" \
         --message="Create directory: ${GG}${base}${N}" || {
             rescursor 1
         }
@@ -115,26 +115,26 @@ if [[ -d "$base/rubytask" ]]; then
     cd
 
     spinner \
-        --command="command rm -rf "$base/rubytask"" \
+        --command="command rm -rf \"${base}/rubytask\"" \
         --message="Removing: ${GG}old rubytask${N}" || {
             rescursor 1
         }
 fi
 
 spinner \
-    --command="command mv "$path" "$base/rubytask"" \
+    --command="command mv \"${path}\" \"${base}/rubytask\"" \
     --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}" || {
         rescursor 1
     }
 
 spinner \
-    --command="command chmod +x "$base/rubytask/rubytask.rb"" \
+    --command="command chmod +x \"${base}/rubytask/rubytask.rb\"" \
     --message="Setting up permission" || {
         rescursor 1
     }
 
 spinner \
-    --command="command ln -sf "$base/rubytask/rubytask.rb" "$symlink/rubytask"" \
+    --command="command ln -sf \"${base}/rubytask/rubytask.rb\" \"${symlink}/rubytask\"" \
     --message="Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}" || {
         rescursor 1
     }
