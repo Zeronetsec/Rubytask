@@ -84,43 +84,58 @@ fi
 echo -ne "\033[?25l"
 echo -e "\n${B}[*] ${N}Installing: ${GG}Rubytask${N}"
 
-spinner \
-    --command="command apt install ruby -y" \
-    --message="${N}Installing: ${GG}ruby${N}" || {
-        rescursor 1
-    }
+pack=(
+    "ruby"
+    "zip"
+)
+
+for i in "${pack[@]}"; do
+    spinner \
+        --command="command apt install \"${i}\" -y" \
+        --message="Installing: ${GG}${i}${N}" || {
+            rescursor 1
+        }
+done
 
 if [[ ! -d "$base" ]]; then
     spinner \
         --command="command mkdir -p "$base"" \
-        --message="${N}Create directory: ${GG}${base}${N}" || {
+        --message="Create directory: ${GG}${base}${N}" || {
             rescursor 1
         }
 fi
 
 if [[ -d "$base/rubytask" ]]; then
+    cd "$base"
+    spinner \
+        --command="command zip -r \"rubytask_$(command date +%Y_%b_%d_%H_%M_%S).bak.zip\" \"rubytask\"" \
+        --message="Backup: ${GG}${base}/rubytask ${DG}=> ${GG}${base}/rubytask_$(command date +%Y_%b_%d_%H_%M_%S).bak.zip${N}" || {
+            rescursor 1
+        }
+    cd
+
     spinner \
         --command="command rm -rf "$base/rubytask"" \
-        --message="${N}Removing: ${GG}old rubytask${N}" || {
+        --message="Removing: ${GG}old rubytask${N}" || {
             rescursor 1
         }
 fi
 
 spinner \
     --command="command mv "$path" "$base/rubytask"" \
-    --message="${N}Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}" || {
+    --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}" || {
         rescursor 1
     }
 
 spinner \
     --command="command chmod +x "$base/rubytask/rubytask.rb"" \
-    --message="${N}Setting up permission" || {
+    --message="Setting up permission" || {
         rescursor 1
     }
 
 spinner \
     --command="command ln -sf "$base/rubytask/rubytask.rb" "$symlink/rubytask"" \
-    --message="${N}Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}" || {
+    --message="Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}" || {
         rescursor 1
     }
 
