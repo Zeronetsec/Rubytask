@@ -18,7 +18,7 @@ module Help
         puts "#{R}› #{N}#{Name} #{GG}finish #{DG}<#{CC}name#{DG}>                #{N}- #{YY}Finish a task#{N}"
         puts "#{R}› #{N}#{Name} #{GG}delete #{DG}<#{CC}name#{DG}>                #{N}- #{YY}Delete a task#{N}"
         puts "#{R}› #{N}#{Name} #{GG}add-note #{DG}<#{CC}name#{DG}>              #{N}- #{YY}Add note text to a task#{N}"
-        puts "#{R}› #{N}#{Name} #{GG}rename #{DG}<#{CC}old_name#{DG}> <#{CC}new_name#{DG}> #{N}- #{YY}Rename an existing task#{N}" 
+        puts "#{R}› #{N}#{Name} #{GG}rename #{DG}<#{CC}name#{DG}> <#{CC}new_name#{DG}>     #{N}- #{YY}Rename an existing task#{N}" 
         puts "#{R}› #{N}#{Name} #{GG}--version                    #{N}- #{YY}Show version#{N}"
         puts "#{R}› #{N}#{Name} #{GG}--help                       #{N}- #{YY}Show this message#{N}"
     end

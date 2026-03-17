@@ -9,6 +9,7 @@ DG='\033[1;90m'
 
 base="$PREFIX/opt"
 symlink="$PREFIX/bin"
+bkdate="$(command date +%Y_%b_%d_%H_%M_%S)"
 
 function spinner() {
     local cmd=""
@@ -52,14 +53,9 @@ function spinner() {
         echo -ne " ${DG}- ${N}[${GG}✔ ${N}Success]\n"
     else
         echo -ne " ${DG}- ${N}[${R}✖ ${N}Failed (exit code: ${GG}${status}${N})]\n"
+        echo -ne "\033[?25h"
+        exit $status
     fi
-}
-
-function rescursor() {
-    local input="$1"
-    echo -ne "\033[?25h"
-    printf '\n'
-    exit $input
 }
 
 printf '\n'
@@ -92,61 +88,56 @@ pack=(
 for i in "${pack[@]}"; do
     spinner \
         --command="command apt install \"${i}\" -y" \
-        --message="Installing: ${GG}${i}${N}" || {
-            rescursor 1
-        }
+        --message="Installing: ${GG}${i}${N}"
 done
 
 if [[ ! -d "$base" ]]; then
     spinner \
         --command="command mkdir -p \"${base}\"" \
-        --message="Create directory: ${GG}${base}${N}" || {
-            rescursor 1
-        }
+        --message="Create directory: ${GG}${base}${N}"
 fi
 
+
 if [[ -d "$base/rubytask" ]]; then
-    cd "$base"
-    spinner \
-        --command="command zip -r \"rubytask_$(command date +%Y_%b_%d_%H_%M_%S).bak.zip\" \"rubytask\"" \
-        --message="Backup: ${GG}${base}/rubytask ${DG}=> ${GG}${base}/rubytask_$(command date +%Y_%b_%d_%H_%M_%S).bak.zip${N}" || {
-            rescursor 1
-        }
-    cd
+    echo -ne "\033[?25h\n"
+    read -p "$(echo -e "${B}[*] ${N}Do you wan't to backup ${GG}${base}/rubytask${N}? (y/n) ")" chs
+    echo -ne "\033[?25l\n"
+
+    if [[ "$chs" == 'y' ]]; then
+        cd "$base"
+        spinner \
+            --command="command zip -r \"rubytask_${bkdate}.bak.zip\" \"rubytask\"" \
+            --message="Backup: ${GG}${base}/rubytask ${DG}=> ${GG}${base}/rubytask_${bkdate}.bak.zip${N}"
+        cd
+    fi
 
     spinner \
         --command="command rm -rf \"${base}/rubytask\"" \
-        --message="Removing: ${GG}old rubytask${N}" || {
-            rescursor 1
-        }
+        --message="Removing: ${GG}old rubytask${N}"
 fi
 
 spinner \
     --command="command mv \"${path}\" \"${base}/rubytask\"" \
-    --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}" || {
-        rescursor 1
-    }
+    --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}"
 
 spinner \
     --command="command chmod +x \"${base}/rubytask/rubytask.rb\"" \
-    --message="Setting up permission" || {
-        rescursor 1
-    }
+    --message="Setting up permission"
 
 spinner \
     --command="command ln -sf \"${base}/rubytask/rubytask.rb\" \"${symlink}/rubytask\"" \
-    --message="Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}" || {
-        rescursor 1
-    }
+    --message="Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}"
 
 printf '\n'
 if command -v rubytask &>/dev/null; then
     echo -e "${GG}[+] ${N}Rubytask installed!"
     echo -e "${GG}[+] ${N}Usage: ${GG}rubytask --help ${N}to show helper"
-    rescursor 0
+    echo -ne "\033[?25h\n"
+    exit 0
 else
     echo -e "${R}[!] ${N}Failed installing Rubytask!"
-    rescursor 1
+    echo -ne "\033[?25l\n"
+    exit 1
 fi
 
 # Copyright (c) 2026 Zeronetsec

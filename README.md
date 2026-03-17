@@ -64,6 +64,19 @@ chmod +x install.sh
 ./install.sh
 ```
 
+## Usage
+``` bash
+rubytask create <name> [<date>]
+rubytask list
+rubytask open <name>
+rubytask finish <name>
+rubytask delete <name>
+rubytask add-note <name>
+rubytask rename <name> <new_name>
+rubytask --help
+rubytask --version
+```
+
 ## License
 This project is licensed under the MIT License. <br>
 
