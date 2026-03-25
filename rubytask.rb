@@ -19,60 +19,60 @@ FileUtils.mkdir_p(DATA_DIR)
 command = ARGV[0]
 
 case command
-    when 'create'
+    when '--create'
         name = ARGV[1]
         start_date = ARGV[2]
         if name
             Create.create_note(name, start_date)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} create #{DG}<#{CC}name#{DG}> [<#{CC}date#{DG}>]#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --create #{DG}<#{CC}name#{DG}> [<#{CC}date#{DG}>]#{N}"
         end
 
-    when 'list'
+    when '--list'
         List.list_notes
 
-    when 'open'
+    when '--open'
         name = ARGV[1]
         if name
             OpenNote.open_note(name)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} open #{DG}<#{CC}name#{DG}>#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --open #{DG}<#{CC}name#{DG}>#{N}"
         end
 
-    when 'finish'
+    when '--finish'
         name = ARGV[1]
         if name
             Finish.finish_note(name)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} finish #{DG}<#{CC}name#{DG}>#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --finish #{DG}<#{CC}name#{DG}>#{N}"
         end
 
-    when 'delete'
+    when '--delete'
         name = ARGV[1]
         if name
             Delete.delete_note(name)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} delete #{DG}<#{CC}name#{DG}>#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --delete #{DG}<#{CC}name#{DG}>#{N}"
         end
 
-    when 'add-note'
+    when '--add-note'
         name = ARGV[1]
         if name
             AddNote.add_note(name)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} add-note #{DG}<#{CC}name#{DG}>#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --add-note #{DG}<#{CC}name#{DG}>#{N}"
         end
 
-    when 'rename'
+    when '--rename'
         old_name = ARGV[1]
         new_name = ARGV[2]
         if old_name && new_name
             Rename.rename_note(old_name, new_name)
         else
-            puts "#{R}[!] #{N}Usage: #{GG}#{Name} rename #{DG}<#{CC}old_name#{DG}> <#{CC}new_name#{DG}>#{N}"
+            puts "#{R}[!] #{N}Usage: #{GG}#{Name} --rename #{DG}<#{CC}old_name#{DG}> <#{CC}new_name#{DG}>#{N}"
         end
 
-    when 'uwu'
+    when '--uwu'
         Uwu.run(5)
 
     when '--version'

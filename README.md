@@ -11,15 +11,11 @@ Rubytask is a lightweight CLI tool for managing tasks and notes with zero depend
 <details>
 <summary>Show Preview</summary>
 <br>
-<img src=".preview/preview_1.gif" width="500">
+<img src=".preview/preview_1.png" width="500">
 <br><br>
 <img src=".preview/preview_2.png" width="500">
 <br><br>
 <img src=".preview/preview_3.png" width="500">
-<br><br>
-<img src=".preview/preview_4.png" width="500">
-<br><br>
-<img src=".preview/preview_5.png" width="500">
 <br>
 </details>
 
@@ -50,6 +46,10 @@ Rubytask is a lightweight CLI tool for managing tasks and notes with zero depend
 		<td>Kali</td>
 		<td>Rolling</td>
 	</tr>
+    <tr>
+        <td>Alpine</td>
+        <td>3.23</td>
+    </tr>
 	<tr>
 		<td>Termux</td>
 		<td>0.118.3</td>
@@ -66,13 +66,13 @@ chmod +x install.sh
 
 ## Usage
 ``` bash
-rubytask create <name> [<date>]
-rubytask list
-rubytask open <name>
-rubytask finish <name>
-rubytask delete <name>
-rubytask add-note <name>
-rubytask rename <name> <new_name>
+rubytask --create <name> [<date>]
+rubytask --list
+rubytask --open <name>
+rubytask --finish <name>
+rubytask --delete <name>
+rubytask --add-note <name>
+rubytask --rename <name> <new_name>
 rubytask --help
 rubytask --version
 ```

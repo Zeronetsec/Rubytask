@@ -11,55 +11,40 @@ base="$PREFIX/opt"
 symlink="$PREFIX/bin"
 bkdate="$(command date +%Y_%b_%d_%H_%M_%S)"
 
-function spinner() {
-    local cmd=""
-    local msg="Running command"
-
-    for args in "$@"; do
-        case "$args" in
-            --command=*)
-                cmd="${args#*=}"
-                ;;
-            --message=*)
-                msg="${args#*=}"
-                ;;
-        esac
-    done
-
-    function spinner_anim() {
-        local pid=$1
-        local delay=0.1
-        local spinstr='|/-\'
-
-        while kill -0 "$pid" 2>/dev/null; do
-            local temp="${spinstr#?}"
-            printf " \033[0m[\033[0;32m%c\033[0m] " "$spinstr"
-            spinstr="$temp${spinstr%"$temp"}"
-            command sleep "$delay"
-            printf "\b\b\b\b\b"
-        done
-        printf "     \b\b\b\b\b"
-    }
-
-    echo -ne "${B}[*] ${N}${msg}${N}"
-    command bash -c "${cmd}" > /dev/null 2>&1 &
-    local pid=$!
-
-    spinner_anim "$pid"
-    wait "$pid"
+function install() {
+    local cmd="$1"
+    local desc="$2"
+    echo -e "\n${B}[*] ${N}${desc}"
+    eval "${cmd}" >/dev/null
     local status=$?
+    echo -e "    ${DG}└── ${N}exit: ${GG}${status}${N}"
+}
 
-    if [[ "$status" -eq 0 ]]; then
-        echo -ne " ${DG}- ${N}[${GG}✔ ${N}Success]\n"
+function getinstall() {
+    if command -v apt >/dev/null 2>&1; then
+        installw="command apt install -y"
+    elif command -v apk >/dev/null 2>&1; then
+        installw="command apk add"
+    elif command -v pacman >/dev/null 2>&1; then
+        installw="command pacman -S --noconfirm"
     else
-        echo -ne " ${DG}- ${N}[${R}✖ ${N}Failed (exit code: ${GG}${status}${N})]\n"
-        echo -ne "\033[?25h"
-        exit $status
+        exit 1
     fi
+
+    echo -e "$1" | while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        IFS="::" read -ra pkgs <<< "$line"
+        for pkg in "${pkgs[@]}"; do
+            pkg="$(echo -e "$pkg" | command xargs)"
+            if eval "$installw $pkg" 2>/dev/null; then
+                break
+            fi
+        done
+    done
 }
 
 printf '\n'
-echo -e "${B}[*] ${N}Enter path to your rubytask folder"
+echo -e "${N}Enter path to your ${GG}rubytask ${N}folder"
 read -p "$(echo -e "${N}Path: ")" path
 declare -A varmap=(
     ["~"]="$HOME"
@@ -86,47 +71,47 @@ pack=(
 )
 
 for i in "${pack[@]}"; do
-    spinner \
-        --command="command apt install \"${i}\" -y" \
-        --message="Installing: ${GG}${i}${N}"
+    install \
+        "getinstall ${i}" \
+        "Installing: ${GG}${i}${N}"
 done
 
 if [[ ! -d "$base" ]]; then
-    spinner \
-        --command="command mkdir -p \"${base}\"" \
-        --message="Create directory: ${GG}${base}${N}"
+    install \
+        "command mkdir -p ${base}" \
+        "Create directory: ${GG}${base}${N}"
 fi
 
 
 if [[ -d "$base/rubytask" ]]; then
     echo -ne "\033[?25h\n"
-    read -p "$(echo -e "${B}[*] ${N}Do you wan't to backup ${GG}${base}/rubytask${N}? (y/n) ")" chs
-    echo -ne "\033[?25l\n"
+    read -p "$(echo -e "${N}Do you wan't to backup ${GG}${base}/rubytask${N}? (y/n) ")" chs
+    echo -ne "\033[?25l"
 
     if [[ "$chs" == 'y' ]]; then
         cd "$base"
-        spinner \
-            --command="command zip -r \"rubytask_${bkdate}.bak.zip\" \"rubytask\"" \
-            --message="Backup: ${GG}${base}/rubytask ${DG}=> ${GG}${base}/rubytask_${bkdate}.bak.zip${N}"
+        install \
+            "command zip -r rubytask_${bkdate}.bak.zip rubytask" \
+            "Backup: ${GG}${base}/rubytask ${DG}=> ${GG}${base}/rubytask_${bkdate}.bak.zip${N}"
         cd
     fi
 
-    spinner \
-        --command="command rm -rf \"${base}/rubytask\"" \
-        --message="Removing: ${GG}old rubytask${N}"
+    install \
+        "command rm -rf ${base}/rubytask" \
+        "Removing: ${GG}old rubytask${N}"
 fi
 
-spinner \
-    --command="command mv \"${path}\" \"${base}/rubytask\"" \
-    --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}"
+install \
+    "command mv ${path} ${base}/rubytask" \
+    "Moving: ${GG}${path} ${DG}=> ${GG}${base}/rubytask${N}"
 
-spinner \
-    --command="command chmod +x \"${base}/rubytask/rubytask.rb\"" \
-    --message="Setting up permission"
+install \
+    "command chmod +x ${base}/rubytask/rubytask.rb" \
+    "Setting up permission"
 
-spinner \
-    --command="command ln -sf \"${base}/rubytask/rubytask.rb\" \"${symlink}/rubytask\"" \
-    --message="Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}"
+install \
+    "command ln -sf ${base}/rubytask/rubytask.rb ${symlink}/rubytask" \
+    "Symlink: ${GG}${base}/rubytask/rubytask.rb ${DG}=> ${GG}${symlink}/rubytask${N}"
 
 printf '\n'
 if command -v rubytask &>/dev/null; then
