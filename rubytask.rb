@@ -73,7 +73,9 @@ case command
         end
 
     when '--uwu'
+        printf "\033[?25l"
         Uwu.run(5)
+        printf "\033[?25h"
 
     when '--version'
         Version.show_version
