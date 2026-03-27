@@ -85,7 +85,7 @@ fi
 
 if [[ -d "$base/rubytask" ]]; then
     echo -ne "\033[?25h\n"
-    read -p "$(echo -e "${N}Do you wan't to backup ${GG}${base}/rubytask${N}? (y/n) ")" chs
+    read -p "$(echo -e "${N}Do you want to backup ${GG}${base}/rubytask${N}? (y/n) ")" chs
     echo -ne "\033[?25l"
 
     if [[ "$chs" == 'y' ]]; then
@@ -120,7 +120,7 @@ if command -v rubytask &>/dev/null; then
     echo -ne "\033[?25h\n"
     exit 0
 else
-    echo -e "${R}[!] ${N}Failed installing Rubytask!"
+    echo -e "${R}[!] ${N}Failed installing rubytask!"
     echo -ne "\033[?25l\n"
     exit 1
 fi
