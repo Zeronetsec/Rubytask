@@ -81,6 +81,7 @@ case command
         Version.show_version
 
     when '--help'
+        Birthday.rubytask_birthday
         Help.show_help
 
     else
