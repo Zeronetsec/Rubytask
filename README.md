@@ -62,6 +62,9 @@ git clone https://github.com/Zeronetsec/Rubytask.git
 cd Rubytask
 chmod +x install.sh
 ./install.sh
+
+# for backup
+./install.sh --backup
 ```
 
 ## Usage
