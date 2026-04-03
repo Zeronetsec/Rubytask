@@ -28,34 +28,6 @@ Rubytask is a lightweight CLI tool for managing tasks and notes with zero depend
 - Add notes to a task
 - Rename existing tasks
 
-## Testing
-<table>
-	<tr>
-		<th>OS</th>
-		<th>Version</th>
-	</tr>
-	<tr>
-		<td>Debian</td>
-		<td>Trixie</td>
-	</tr>
-    <tr>
-        <td>Ubuntu</td>
-        <td>25.10</td>
-    </tr>
-	<tr>
-		<td>Kali</td>
-		<td>Rolling</td>
-	</tr>
-    <tr>
-        <td>Alpine</td>
-        <td>3.23</td>
-    </tr>
-	<tr>
-		<td>Termux</td>
-		<td>0.118.3</td>
-	</tr>
-</table>
-
 ## Installation
 ```bash
 git clone https://github.com/Zeronetsec/Rubytask.git
@@ -70,14 +42,12 @@ chmod +x install.sh
 ## Usage
 ``` bash
 rubytask --create <name> [<date>]
-rubytask --list
 rubytask --open <name>
 rubytask --finish <name>
 rubytask --delete <name>
 rubytask --add-note <name>
 rubytask --rename <name> <new_name>
-rubytask --help
-rubytask --version
+rubytask --list
 ```
 
 ## License
