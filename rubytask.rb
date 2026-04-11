@@ -85,7 +85,7 @@ case command
         Help.show_help
 
     else
-        puts "#{R}[!] #{N}Unknown command!"
+        puts "#{R}[!] #{N}Invalid input!"
         puts "#{R}[!] #{N}Try: #{GG}#{Name} --help#{N}"
 end
 
