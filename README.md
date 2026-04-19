@@ -3,22 +3,9 @@
 [![version](https://img.shields.io/badge/Rubytask-Version%201.0-blue.svg?maxAge=259200)]()
 [![os](https://img.shields.io/badge/Supported%20OS-Linux-blue.svg)]()
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![views](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FZeronetsec%2FRubytask.json&&label=Views&color=blue)](https://github.com/Zeronetsec/Rubytask)
 
 # Rubytask
 Rubytask is a lightweight CLI tool for managing tasks and notes with zero dependencies. <br>
-
-## Preview
-<details>
-<summary>Show Preview</summary>
-<br>
-<img src=".preview/preview_1.png" width="500">
-<br><br>
-<img src=".preview/preview_2.png" width="500">
-<br><br>
-<img src=".preview/preview_3.png" width="500">
-<br>
-</details>
 
 ## Features
 - Create new tasks
